@@ -16,6 +16,35 @@ class Channel:
         self.video_count = self.get_info()['items'][0]['statistics']['videoCount']
         self.view_count = self.get_info()['items'][0]['statistics']['viewCount']
 
+    def __str__(self):
+        return f"{self.title} ({self.url})"
+
+    def __add__(self, other):
+        return int(self.subscriber_count) + int(other.subscriber_count)
+
+    def __sub__(self, other):
+        return int(self.subscriber_count) - int(other.subscriber_count)
+
+    def __ge__(self, other):
+        if int(self.subscriber_count) >= int(other.subscriber_count):
+            return True
+        else:
+            return False
+    def __gt__(self, other):
+        if int(self.subscriber_count) > int(other.subscriber_count):
+            return True
+        else:
+            return False
+    def __lt__(self, other):
+        if int(self.subscriber_count) < int(other.subscriber_count):
+            return True
+        else:
+            return False
+    def __le__(self, other):
+        if int(self.subscriber_count) <= int(other.subscriber_count):
+            return True
+        else:
+            return False
     def get_info(self):
         channel = self.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
         return channel
