@@ -6,10 +6,16 @@ class Video():
     youtube = build('youtube', 'v3', developerKey=api_key)
     def __init__(self, video_id):
         self.video_id = video_id
-        self.title = self.get_video()['items'][0]['snippet']['title']
-        self.url = self.url = ''.join(['https://www.youtube.com/watch/', self.video_id])
-        self.view_count = self.get_video()['items'][0]['statistics']['viewCount']
-        self.likes_count = self.get_video()['items'][0]['statistics']['likeCount']
+        try:
+            self.title = self.get_video()['items'][0]['snippet']['title']
+            self.url = self.url = ''.join(['https://www.youtube.com/watch/', self.video_id])
+            self.view_count = self.get_video()['items'][0]['statistics']['viewCount']
+            self.like_count = self.get_video()['items'][0]['statistics']['likeCount']
+        except IndexError:
+            self.title = None
+            self.url = None
+            self.view_count = None
+            self.like_count = None
     def get_video(self):
         video = self.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails', id=self.video_id).execute()
         return video
